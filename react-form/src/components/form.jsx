@@ -17,12 +17,9 @@ function Form() {
     
     const [errorMessages, setErrorMessages] = useState([])
 
-    useEffect(async () => {
-        // const updateError = async () => { 
-        // handleSubmit()
-        handleSubmit()
-        // }
-        // updateError()
+    useEffect(() => {
+       let errors2 = validates()
+       setErrorMessages(errors2)
 
     }, [name, email, phoneNumber])
 
