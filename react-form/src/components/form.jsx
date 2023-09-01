@@ -1,5 +1,10 @@
-import { useState } from "react"
-
+import { useState, useEffect } from "react"
+// tie useeffect to handlechange
+// tracking name, email, phone number
+// multiple variables in dependency array
+// callback function
+// in callback, we update state, that re-renders, it should re-render errors
+// callback should be handleSubmit?
 
 function Form() {
     const [name, setName] = useState("")
@@ -10,9 +15,19 @@ function Form() {
     const [bio, setBio] = useState("")
     const [signUp, setSignUp] = useState("")
     
-    const [errors, setErrors] = useState([])
+    const [errorMessages, setErrorMessages] = useState([])
+
+    useEffect(async () => {
+        // const updateError = async () => { 
+        // handleSubmit()
+        handleSubmit()
+        // }
+        // updateError()
+
+    }, [name, email, phoneNumber])
 
     const validates = () => {
+        console.log("validates")
         const errors = [];
 
         if (name.length === 0){
@@ -41,25 +56,74 @@ function Form() {
         if (bio.length > 280) {
             errors.push("Bio should have a character limit of 280 characters.")
         }
+
+        return errors
     }
 
     const showErrors = () => {
-        if (!errors.length) {
+        if (!errorMessages.length) {
             return null;
         } else {
-            
+            return (
             <ul> 
-                {errors.map(error => <li>{error}</li>)}
+                {errorMessages.map(error => <li>{error}</li>)}
             </ul>
+            )
         }
     }
 
-    const handleChange = () => {
-        console.log("handling change")
+    const handleChange = (field) => {
+        console.log("change")
+        return (e) => {
+            switch(field){
+                case "name":
+                    setName(e.target.value)
+                    break;
+                case "email":
+                    setEmail(e.target.value)
+                    break;
+                case "phone number":
+                    setPhoneNumber(e.target.value)
+                    break;
+                // case "phone type":
+                //     setPhoneType(e.target.value)
+                //     break; 
+                // case "bio ":
+                    // setBio(e.target.value)
+                    // break;
+                // case "name":
+                //     setName(e.target.value)
+                //     break;
+                // case "name":
+                //     setName(e.target.value)
+                //     break;           
+                default:
+                    break;
+            }
+        }
+        
     }
 
-    const handleSubmit = () => {
-        console.log("handling submit")
+    const handleSubmit = (e) => {
+        // e.preventDefault()
+        console.log("submit")
+    
+            
+        let errors = validates()
+
+            if (errorMessages.length) {
+                setErrorMessages(errors)
+            } else {
+                let user = {
+                    name,
+                    email,
+                    phoneNumber
+                }
+                console.log(user)
+                setErrorMessages([])
+            }
+            
+        
     }
 
     return(
@@ -69,40 +133,40 @@ function Form() {
 
         <form className="form" onSubmit={handleSubmit}>
             <input type="text" placeholder="Name" value={name} onChange={handleChange("name")}/>
-            div
+            
 
             <input type="text" placeholder="Email" value={email} onChange={handleChange("email")}/>
 
             <input type="text" placeholder="Phone Number" value={phoneNumber} onChange={handleChange("phone number")}/>
 
-            <label>Phone Type: 
+            {/* <label>Phone Type: 
                 <select name="phoneType" onChange={handleChange("phone type")}>
                     <option value="default" disabled="disabled" selected="selected"></option>
                     <option value="mobile">mobile</option>
                     <option value="home">home</option>
                     <option value="work">work</option>
                 </select>
-            </label>
+            </label> */}
 
-            <label>Instructor
+            {/* <label>Instructor
                 <input type="radio" name="Staff" value="instructor" onChange={handleChange}/>
             </label>
             <label>Student
                 <input type="radio" name="Staff" value="student" onChange={handleChange}/>
-            </label> 
+            </label>  */}
 
-            <label>Bio: 
-                <textarea name="Bio" rows="4" cols="50" onChange={handleChange("Bio")}></textarea>
-            </label>
+            {/* <label>Bio: 
+                <textarea name="Bio" rows="4" cols="50" onChange={handleChange("bio")}></textarea>
+            </label> */}
 
-            <label>Email subscription sign up: 
+            {/* <label>Email subscription sign up: 
                 <label> Yes
                 <input type="checkbox" value="Yes" onChange={handleChange}/>
                 </label>
                 <label> No
                 <input type="checkbox" value="No" onChange={handleChange}/>
                 </label>
-            </label>
+            </label> */}
 
             <button>Submit</button>
         </form>
