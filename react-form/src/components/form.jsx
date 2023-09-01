@@ -18,10 +18,10 @@ function Form() {
     const [errorMessages, setErrorMessages] = useState([])
 
     useEffect(() => {
-       let errors2 = validates()
-       setErrorMessages(errors2)
+       let errors = validates()
+       setErrorMessages(errors)
 
-    }, [name, email, phoneNumber])
+    }, [name, email, phoneNumber, phoneType])
 
     const validates = () => {
         console.log("validates")
@@ -44,9 +44,9 @@ function Form() {
             if (phoneNumber.length !== 10 || typeof phoneNumber === "number") {
                 errors.push("Phone number is optional, if presented, it should be properly formatted.")
             }
-
-            if (phoneType.value === "default") {
-                errors.push("Bio should have a character limit of 280 characters.")
+            
+            if (!phoneType) {
+                errors.push("Phone type is required, Cannot be empty.")
             }
         }
 
@@ -82,9 +82,10 @@ function Form() {
                 case "phone number":
                     setPhoneNumber(e.target.value)
                     break;
-                // case "phone type":
-                //     setPhoneType(e.target.value)
-                //     break; 
+                case "phone type":
+                    debugger
+                    setPhoneType(e.target.value)
+                    break; 
                 // case "bio ":
                     // setBio(e.target.value)
                     // break;
@@ -102,7 +103,7 @@ function Form() {
     }
 
     const handleSubmit = (e) => {
-        // e.preventDefault()
+        e.preventDefault()
         console.log("submit")
     
             
@@ -136,14 +137,14 @@ function Form() {
 
             <input type="text" placeholder="Phone Number" value={phoneNumber} onChange={handleChange("phone number")}/>
 
-            {/* <label>Phone Type: 
+            <label>Phone Type: 
                 <select name="phoneType" onChange={handleChange("phone type")}>
-                    <option value="default" disabled="disabled" selected="selected"></option>
+                    <option disabled defaultValue>Select Option</option>
                     <option value="mobile">mobile</option>
                     <option value="home">home</option>
                     <option value="work">work</option>
                 </select>
-            </label> */}
+            </label>
 
             {/* <label>Instructor
                 <input type="radio" name="Staff" value="instructor" onChange={handleChange}/>
